@@ -15,6 +15,7 @@ bool validateString(const char *str) {
     return true;
 }
 
+// validate input if input is an email
 bool validateEmail(const char *email) {
     int at_count = 0;
     int dot_count = 0;
@@ -31,6 +32,7 @@ bool validateEmail(const char *email) {
     return at_count == 1 && dot_count >= 1;
 }
 
+// validate input if input is a date
 bool validateDate(const char *date) {
     int length = strlen(date);
 
@@ -64,7 +66,7 @@ bool validateDate(const char *date) {
     return true;
 }
 
-
+// validate input if input is a phone number
 bool validatePhoneNumber(const char *phoneNumber) {
     int digit_count = 0;
     int length = strlen(phoneNumber);
@@ -84,6 +86,7 @@ bool validatePhoneNumber(const char *phoneNumber) {
     return digit_count >= 7; 
 }
 
+// validate input if input is a weight value
 bool validateWeight(int weight) {
     return weight >= 0; 
 }
