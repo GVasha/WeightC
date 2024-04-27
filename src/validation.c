@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+// validate input if input is a string
 bool validateString(const char *str) {
     int length = strlen(str);
     for (int i = 0; i < length; i++) {
