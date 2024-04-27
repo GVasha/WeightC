@@ -6,9 +6,11 @@
 #include <time.h>
 #include "validation.h"
 
+// preprocessor directive to not exceed 1024 in MAX_LINE_SIZE
 #define MAX_LINE_SIZE 1024 
 char fileName[100];
 
+// function to modify entry (see documentation)
 void modifyEntry(FILE *file, const char *fileName) {
 
     printf("Existing entries:\n");
@@ -27,6 +29,7 @@ void modifyEntry(FILE *file, const char *fileName) {
 
     rewind(file);
 
+    // create temporary file
     FILE *tempFile = fopen("temp.csv", "w");
     if (tempFile == NULL) {
         printf("Error creating temporary file.\n");
@@ -37,7 +40,7 @@ void modifyEntry(FILE *file, const char *fileName) {
     int num;
     int currentEntry = 1;
 
-
+    // menu loop to choose which field to modify
     while (fscanf(file, "%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n", entry.name, entry.lastName, &entry.weight, entry.date, entry.email, entry.phoneNumber) != EOF) {
         if (currentEntry == entryNumber) {
             found = true;
@@ -153,6 +156,7 @@ void modifyEntry(FILE *file, const char *fileName) {
     fclose(file);
     fclose(tempFile);
 
+    // replace old file with new temporary file
     remove(fileName); 
     rename("temp.csv", fileName); 
     FILE *file1;
@@ -160,11 +164,12 @@ void modifyEntry(FILE *file, const char *fileName) {
     printf("Entry modified successfully!\n");
 }
 
-
+// save new entry function (see documentation)
 void saveNewEntry(FILE *file) {
     struct AddressBookEntry newEntry;
     int option;
 
+    // menu to choose what to do with entry
     printf("\nEnter details for the new entry:\n");
     printf("1. Add new entry\n");
     printf("2. Modify existing entry\n");
@@ -256,7 +261,7 @@ void saveNewEntry(FILE *file) {
     }
 }
 
-
+// entry retriever function
 void retrieveInformation(FILE *file) {
     int choice;
     printf("\nHow would you like to search for the data?\n");
@@ -284,7 +289,9 @@ void retrieveInformation(FILE *file) {
             int entryIndex = 0;
             struct AddressBookEntry matchingEntries[100]; // Max 100 entries for simplicity
 
+            // Loop through each line in the file until the end of file is reached
             while (fscanf(file, "%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n", entry.name, entry.lastName, &entry.weight, entry.date, entry.email, entry.phoneNumber) != EOF) {
+                // Check if any of the fields in the current entry match the given criteria
                 if ((strcmp(field, "name") == 0 && strcmp(entry.name, criteria) == 0) ||
                     (strcmp(field, "lastName") == 0 && strcmp(entry.lastName, criteria) == 0) ||
                     (strcmp(field, "weight") == 0 && entry.weight == atoi(criteria)) ||
@@ -299,6 +306,7 @@ void retrieveInformation(FILE *file) {
                 }
             }
 
+            // If no matching entry was found for the specified criteria
             if (!found) {
                 printf("No matching entry found for the specified criteria.\n");
             } else {
@@ -337,6 +345,7 @@ void retrieveInformation(FILE *file) {
     }
 }
 
+// function to delete entries (see documentation)
 void deleteEntry(FILE *file) {
     FILE *tempFile = fopen("temp.csv", "w");
     if (tempFile == NULL) {
@@ -362,6 +371,7 @@ void deleteEntry(FILE *file) {
     int currentEntry = 1;
     bool found = false;
 
+    // Loop through each line in the file until the end of file is reached
     while (fscanf(file, "%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n", entry.name, entry.lastName, &entry.weight, entry.date, entry.email, entry.phoneNumber) != EOF) {
         if (currentEntry != entryNumber) {
             fprintf(tempFile, "%s,%s,%d,%s,%s,%s\n", entry.name, entry.lastName, entry.weight, entry.date, entry.email, entry.phoneNumber);
