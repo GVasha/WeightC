@@ -9,13 +9,15 @@ char fileName[100];
 int startup(const char *fileName) {
     int choice;
     FILE *file;
-    file = fopen(fileName, "a+"); 
+    file = fopen(fileName, "a+"); //open the file
 
+    // error handling
     if (file == NULL) {
         printf("Error opening file!\n");
         return 1;
     }
 
+    // enter a menu loop to choose options with the dataset
     do {
         printf("\nSelect an option:\n");
         printf("1. Save/Edit/Delete entry\n");
@@ -46,13 +48,15 @@ int startup(const char *fileName) {
         }
     } while (choice != 3);
 
+    // close the file
     fclose(file);
     return 0;
 }
 
+// main funtion
 int main() {
     printf("Welcome to Alpha weightlifters \nEnter a new secret space to store your weight (or choose existing one (e.g., database.csv)): ");
-    scanf("%s", fileName);
+    scanf("%s", fileName); // call startup funcion
     return startup(fileName);
 }
 
